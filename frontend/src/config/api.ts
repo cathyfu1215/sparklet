@@ -26,6 +26,10 @@ export const API_ENDPOINTS = {
   // User
   USER_PROFILE: '/user/profile',
   
+  // Pages
+  PAGES: '/pages',
+  PAGE_INFO: '/pages',
+  
   // Test
   TEST_PUBLIC: '/test/public',
   TEST_USER: '/test/user'

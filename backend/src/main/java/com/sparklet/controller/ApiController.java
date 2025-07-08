@@ -28,6 +28,7 @@ public class ApiController {
         endpoints.put("interview", "/api/interview/questions");
         endpoints.put("feedback", "/api/feedback");
         endpoints.put("user", "/api/user/profile");
+        endpoints.put("pages", "/api/pages");
         endpoints.put("test", "/api/test/public, /api/test/user");
         
         info.put("endpoints", endpoints);
