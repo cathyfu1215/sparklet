@@ -6,6 +6,12 @@ const router = createRouter({
   routes: [
     {
       path: '/',
+      name: 'welcome',
+      component: () => import('../views/WelcomeView.vue'),
+      meta: { requiresAuth: false }
+    },
+    {
+      path: '/dashboard',
       name: 'dashboard',
       component: () => import('../views/DashboardView.vue'),
       meta: { requiresAuth: true }
@@ -46,6 +52,12 @@ const router = createRouter({
       component: () => import('../views/LoginView.vue'),
       meta: { requiresAuth: false }
     },
+    {
+      path: '/signup',
+      name: 'signup',
+      component: () => import('../views/SignupView.vue'),
+      meta: { requiresAuth: false }
+    },
   ],
 })
 
@@ -56,9 +68,9 @@ router.beforeEach((to, from, next) => {
   if (to.meta.requiresAuth && !authStore.isAuthenticated) {
     // Redirect to login if route requires auth and user is not authenticated
     next('/login')
-  } else if (to.name === 'login' && authStore.isAuthenticated) {
-    // Redirect to dashboard if trying to access login while authenticated
-    next('/')
+  } else if ((to.name === 'login' || to.name === 'signup') && authStore.isAuthenticated) {
+    // Redirect to dashboard if trying to access login/signup while authenticated
+    next('/dashboard')
   } else {
     next()
   }

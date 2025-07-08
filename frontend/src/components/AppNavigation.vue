@@ -12,7 +12,7 @@
         <!-- Navigation Links -->
         <div v-if="authStore.isAuthenticated" class="hidden md:flex space-x-8">
           <router-link 
-            to="/" 
+            to="/dashboard" 
             class="text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 px-3 py-2 rounded-md text-sm font-medium"
             :class="{ 'text-blue-600 dark:text-blue-400 font-semibold': $route.name === 'dashboard' }"
           >
@@ -160,7 +160,7 @@
       <div v-if="showMobileMenu && authStore.isAuthenticated" class="md:hidden">
         <div class="px-2 pt-2 pb-3 space-y-1 bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700">
           <router-link 
-            to="/" 
+            to="/dashboard" 
             @click="showMobileMenu = false"
             class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400"
             :class="{ 'text-blue-600 dark:text-blue-400 font-semibold': $route.name === 'dashboard' }"

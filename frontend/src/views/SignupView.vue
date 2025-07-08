@@ -1,14 +1,47 @@
 <template>
   <div class="flex items-center justify-center min-h-screen">
     <div class="w-full max-w-md">
-      <form @submit.prevent="handleLogin" class="bg-white dark:bg-gray-800 shadow-md rounded px-8 pt-6 pb-8 mb-4">
-        <h2 class="text-2xl font-bold text-center mb-6 text-gray-900 dark:text-white">Sign In to Sparklet</h2>
+      <form @submit.prevent="handleSignup" class="bg-white dark:bg-gray-800 shadow-md rounded px-8 pt-6 pb-8 mb-4">
+        <h2 class="text-2xl font-bold text-center mb-6 text-gray-900 dark:text-white">Join Sparklet</h2>
         
         <!-- Error Message -->
         <div v-if="authStore.error" class="mb-4 bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded">
           {{ authStore.error }}
         </div>
+
+        <!-- Success Message -->
+        <div v-if="successMessage" class="mb-4 bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded">
+          {{ successMessage }}
+        </div>
         
+        <div class="mb-4">
+          <label class="block text-gray-700 dark:text-gray-300 text-sm font-bold mb-2" for="firstName">
+            First Name
+          </label>
+          <input 
+            v-model="form.firstName"
+            class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 dark:text-gray-300 leading-tight focus:outline-none focus:shadow-outline" 
+            id="firstName" 
+            type="text" 
+            placeholder="John"
+            required
+          >
+        </div>
+
+        <div class="mb-4">
+          <label class="block text-gray-700 dark:text-gray-300 text-sm font-bold mb-2" for="lastName">
+            Last Name
+          </label>
+          <input 
+            v-model="form.lastName"
+            class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 dark:text-gray-300 leading-tight focus:outline-none focus:shadow-outline" 
+            id="lastName" 
+            type="text" 
+            placeholder="Doe"
+            required
+          >
+        </div>
+
         <div class="mb-4">
           <label class="block text-gray-700 dark:text-gray-300 text-sm font-bold mb-2" for="email">
             Email
@@ -22,6 +55,7 @@
             required
           >
         </div>
+        
         <div class="mb-6">
           <label class="block text-gray-700 dark:text-gray-300 text-sm font-bold mb-2" for="password">
             Password
@@ -34,6 +68,7 @@
               :type="showPassword ? 'text' : 'password'" 
               placeholder="******************"
               required
+              minlength="6"
             >
             <button 
               type="button"
@@ -50,24 +85,32 @@
               </svg>
             </button>
           </div>
+          <p class="text-xs text-gray-500 dark:text-gray-400">Password must be at least 6 characters long</p>
         </div>
+
         <div class="flex items-center justify-between">
           <button 
             :disabled="authStore.loading"
             class="bg-blue-500 hover:bg-blue-700 disabled:bg-blue-300 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline w-full" 
             type="submit"
           >
-            {{ authStore.loading ? 'Signing In...' : 'Sign In' }}
+            {{ authStore.loading ? 'Creating Account...' : 'Create Account' }}
           </button>
         </div>
-        
-        <!-- Sample Credentials -->
-        <div class="mt-4 p-3 bg-gray-100 dark:bg-gray-700 rounded">
-          <p class="text-sm text-gray-600 dark:text-gray-400 mb-2">Sample credentials:</p>
-          <p class="text-xs text-gray-500 dark:text-gray-500">Email: tom@example.com</p>
-          <p class="text-xs text-gray-500 dark:text-gray-500">Password: password123</p>
+
+        <div class="mt-6 text-center">
+          <p class="text-gray-600 dark:text-gray-400 text-sm">
+            Already have an account? 
+            <router-link 
+              to="/login" 
+              class="text-blue-500 hover:text-blue-700 font-medium"
+            >
+              Sign in here
+            </router-link>
+          </p>
         </div>
       </form>
+      
       <p class="text-center text-gray-500 text-xs">
         &copy;2025 Sparklet Corp. All rights reserved.
       </p>
@@ -84,11 +127,14 @@ const router = useRouter()
 const authStore = useAuthStore()
 
 const form = ref({
+  firstName: '',
+  lastName: '',
   email: '',
   password: ''
 })
 
 const showPassword = ref(false)
+const successMessage = ref('')
 
 onMounted(() => {
   // Clear any previous errors
@@ -100,11 +146,17 @@ onMounted(() => {
   }
 })
 
-async function handleLogin() {
-  const result = await authStore.login(form.value)
+async function handleSignup() {
+  successMessage.value = ''
+  
+  const result = await authStore.signup(form.value)
   
   if (result.success) {
-    router.push('/dashboard')
+    successMessage.value = 'Account created successfully! Redirecting to dashboard...'
+    // The signup function automatically logs in the user, so redirect to dashboard
+    setTimeout(() => {
+      router.push('/dashboard')
+    }, 1500)
   }
 }
 </script>
