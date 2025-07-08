@@ -32,7 +32,7 @@
             class="text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 px-3 py-2 rounded-md text-sm font-medium"
             :class="{ 'text-blue-600 dark:text-blue-400 font-semibold': $route.name === 'problem-solving' }"
           >
-            Practice
+            Problem Solving
           </router-link>
           
           <router-link 
@@ -183,7 +183,7 @@
             class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400"
             :class="{ 'text-blue-600 dark:text-blue-400 font-semibold': $route.name === 'problem-solving' }"
           >
-            Practice
+            Problem Solving
           </router-link>
           
           <router-link 
