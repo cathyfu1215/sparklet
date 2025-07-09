@@ -8,6 +8,12 @@ export interface UserProfile {
   firstName: string
   lastName: string
   profilePhotoUrl: string
+  mbtiType?: string
+  linkedinUrl?: string
+  personalWebsiteUrl?: string
+  githubUrl?: string
+  accountType: 'BASIC' | 'PREMIUM'
+  premiumExpiryDate?: string
   createdAt: string
   updatedAt: string
 }
@@ -16,6 +22,10 @@ export interface UpdateUserProfile {
   firstName: string
   lastName: string
   profilePhotoUrl: string
+  mbtiType?: string
+  linkedinUrl?: string
+  personalWebsiteUrl?: string
+  githubUrl?: string
 }
 
 class UserService {

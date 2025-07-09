@@ -24,6 +24,12 @@ export interface AuthResponse {
     firstName: string
     lastName: string
     profilePhotoUrl: string
+    mbtiType?: string
+    linkedinUrl?: string
+    personalWebsiteUrl?: string
+    githubUrl?: string
+    accountType: 'BASIC' | 'PREMIUM'
+    premiumExpiryDate?: string
   }
 }
 

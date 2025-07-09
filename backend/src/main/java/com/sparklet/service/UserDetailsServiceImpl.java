@@ -1,6 +1,7 @@
 package com.sparklet.service;
 
 import com.sparklet.model.User;
+import com.sparklet.model.AccountType;
 import com.sparklet.security.UserPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -35,6 +36,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         user.setFirstName(firstName);
         user.setLastName(lastName);
         user.setProfilePhotoUrl("https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80");
+        user.setAccountType(AccountType.BASIC); // Default to BASIC account
         user.setCreatedAt(LocalDateTime.now());
         user.setUpdatedAt(LocalDateTime.now());
         users.put(email, user);
@@ -51,6 +53,13 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
     public User findByEmail(String email) {
         return users.get(email);
+    }
+
+    public User findById(Long id) {
+        return users.values().stream()
+                .filter(user -> user.getId().equals(id))
+                .findFirst()
+                .orElse(null);
     }
 
     public User save(User user) {

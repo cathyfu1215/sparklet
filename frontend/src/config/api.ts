@@ -26,6 +26,11 @@ export const API_ENDPOINTS = {
   // User
   USER_PROFILE: '/user/profile',
   
+  // Payment
+  PAYMENT_CREATE_INTENT: '/payment/create-intent',
+  PAYMENT_CONFIRM: '/payment/confirm',
+  PAYMENT_PLANS: '/payment/plans',
+  
   // Pages
   PAGES: '/pages',
   PAGE_INFO: '/pages',

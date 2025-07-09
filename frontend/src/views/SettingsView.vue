@@ -85,6 +85,74 @@
           <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">Email address cannot be changed</p>
         </div>
 
+        <!-- MBTI Type -->
+        <div>
+          <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+            MBTI Type
+          </label>
+          <select
+            v-model="form.mbtiType"
+            class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:text-white"
+          >
+            <option value="">Select MBTI Type (Optional)</option>
+            <option value="INTJ">INTJ - The Architect</option>
+            <option value="INTP">INTP - The Thinker</option>
+            <option value="ENTJ">ENTJ - The Commander</option>
+            <option value="ENTP">ENTP - The Debater</option>
+            <option value="INFJ">INFJ - The Advocate</option>
+            <option value="INFP">INFP - The Mediator</option>
+            <option value="ENFJ">ENFJ - The Protagonist</option>
+            <option value="ENFP">ENFP - The Campaigner</option>
+            <option value="ISTJ">ISTJ - The Logistician</option>
+            <option value="ISFJ">ISFJ - The Protector</option>
+            <option value="ESTJ">ESTJ - The Executive</option>
+            <option value="ESFJ">ESFJ - The Consul</option>
+            <option value="ISTP">ISTP - The Virtuoso</option>
+            <option value="ISFP">ISFP - The Adventurer</option>
+            <option value="ESTP">ESTP - The Entrepreneur</option>
+            <option value="ESFP">ESFP - The Entertainer</option>
+          </select>
+        </div>
+
+        <!-- LinkedIn URL -->
+        <div>
+          <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+            LinkedIn Profile
+          </label>
+          <input
+            v-model="form.linkedinUrl"
+            type="url"
+            class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:text-white"
+            placeholder="https://linkedin.com/in/your-profile"
+          >
+        </div>
+
+        <!-- Personal Website -->
+        <div>
+          <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+            Personal Website
+          </label>
+          <input
+            v-model="form.personalWebsiteUrl"
+            type="url"
+            class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:text-white"
+            placeholder="https://your-website.com"
+          >
+        </div>
+
+        <!-- GitHub URL -->
+        <div>
+          <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+            GitHub Profile
+          </label>
+          <input
+            v-model="form.githubUrl"
+            type="url"
+            class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:text-white"
+            placeholder="https://github.com/your-username"
+          >
+        </div>
+
         <!-- Account Info -->
         <div class="bg-gray-50 dark:bg-gray-700 p-4 rounded-md">
           <h3 class="text-lg font-medium text-gray-800 dark:text-white mb-2">Account Information</h3>
@@ -92,6 +160,29 @@
             <p><strong>Account Created:</strong> {{ formatDate(profile.createdAt) }}</p>
             <p><strong>Last Updated:</strong> {{ formatDate(profile.updatedAt) }}</p>
             <p><strong>User ID:</strong> {{ profile.id }}</p>
+            <div class="flex items-center justify-between mt-3">
+              <div>
+                <p><strong>Account Type:</strong> 
+                  <span :class="profile.accountType === 'PREMIUM' ? 'text-yellow-600 font-semibold' : 'text-gray-600'">
+                    {{ profile.accountType }}
+                  </span>
+                </p>
+                <p v-if="profile.accountType === 'PREMIUM' && profile.premiumExpiryDate" class="text-xs mt-1">
+                  <strong>Premium expires:</strong> {{ formatDate(profile.premiumExpiryDate) }}
+                  <span :class="isPremiumExpired ? 'text-red-500' : isExpiringMon ? 'text-yellow-500' : 'text-green-500'">
+                    {{ getPremiumStatus() }}
+                  </span>
+                </p>
+              </div>
+              <div v-if="profile.accountType === 'BASIC' || isPremiumExpired">
+                <button
+                  @click="goToPayment"
+                  class="px-3 py-1 text-xs bg-yellow-500 text-white rounded hover:bg-yellow-600"
+                >
+                  Upgrade to Premium
+                </button>
+              </div>
+            </div>
           </div>
         </div>
 
@@ -119,9 +210,11 @@
 
 <script setup lang="ts">
 import { ref, reactive, computed, onMounted } from 'vue'
+import { useRouter } from 'vue-router'
 import { useAuthStore } from '../stores/auth'
 import userService, { type UserProfile, type UpdateUserProfile } from '../services/userService'
 
+const router = useRouter()
 const authStore = useAuthStore()
 
 const profile = ref<UserProfile | null>(null)
@@ -133,19 +226,48 @@ const successMessage = ref<string | null>(null)
 const form = reactive({
   firstName: '',
   lastName: '',
-  profilePhotoUrl: ''
+  profilePhotoUrl: '',
+  mbtiType: '',
+  linkedinUrl: '',
+  personalWebsiteUrl: '',
+  githubUrl: ''
 })
 
 const originalForm = ref({
   firstName: '',
   lastName: '',
-  profilePhotoUrl: ''
+  profilePhotoUrl: '',
+  mbtiType: '',
+  linkedinUrl: '',
+  personalWebsiteUrl: '',
+  githubUrl: ''
 })
 
 const hasChanges = computed(() => {
   return form.firstName !== originalForm.value.firstName ||
          form.lastName !== originalForm.value.lastName ||
-         form.profilePhotoUrl !== originalForm.value.profilePhotoUrl
+         form.profilePhotoUrl !== originalForm.value.profilePhotoUrl ||
+         form.mbtiType !== originalForm.value.mbtiType ||
+         form.linkedinUrl !== originalForm.value.linkedinUrl ||
+         form.personalWebsiteUrl !== originalForm.value.personalWebsiteUrl ||
+         form.githubUrl !== originalForm.value.githubUrl
+})
+
+const isPremiumExpired = computed(() => {
+  if (!profile.value || profile.value.accountType !== 'PREMIUM' || !profile.value.premiumExpiryDate) {
+    return false
+  }
+  return new Date(profile.value.premiumExpiryDate) < new Date()
+})
+
+const isExpiringMon = computed(() => {
+  if (!profile.value || profile.value.accountType !== 'PREMIUM' || !profile.value.premiumExpiryDate) {
+    return false
+  }
+  const expiryDate = new Date(profile.value.premiumExpiryDate)
+  const now = new Date()
+  const diffDays = Math.ceil((expiryDate.getTime() - now.getTime()) / (1000 * 60 * 60 * 24))
+  return diffDays <= 7 && diffDays > 0
 })
 
 async function fetchProfile() {
@@ -171,11 +293,19 @@ function updateForm(profileData: UserProfile) {
   form.firstName = profileData.firstName
   form.lastName = profileData.lastName
   form.profilePhotoUrl = profileData.profilePhotoUrl
+  form.mbtiType = profileData.mbtiType || ''
+  form.linkedinUrl = profileData.linkedinUrl || ''
+  form.personalWebsiteUrl = profileData.personalWebsiteUrl || ''
+  form.githubUrl = profileData.githubUrl || ''
   
   originalForm.value = {
     firstName: profileData.firstName,
     lastName: profileData.lastName,
-    profilePhotoUrl: profileData.profilePhotoUrl
+    profilePhotoUrl: profileData.profilePhotoUrl,
+    mbtiType: profileData.mbtiType || '',
+    linkedinUrl: profileData.linkedinUrl || '',
+    personalWebsiteUrl: profileData.personalWebsiteUrl || '',
+    githubUrl: profileData.githubUrl || ''
   }
 }
 
@@ -196,7 +326,11 @@ async function updateProfile() {
     const updateData: UpdateUserProfile = {
       firstName: form.firstName,
       lastName: form.lastName,
-      profilePhotoUrl: form.profilePhotoUrl
+      profilePhotoUrl: form.profilePhotoUrl,
+      mbtiType: form.mbtiType || undefined,
+      linkedinUrl: form.linkedinUrl || undefined,
+      personalWebsiteUrl: form.personalWebsiteUrl || undefined,
+      githubUrl: form.githubUrl || undefined
     }
     
     const response = await userService.updateProfile(updateData)
@@ -209,7 +343,11 @@ async function updateProfile() {
         ...authStore.user,
         firstName: response.data.firstName,
         lastName: response.data.lastName,
-        profilePhotoUrl: response.data.profilePhotoUrl
+        profilePhotoUrl: response.data.profilePhotoUrl,
+        mbtiType: response.data.mbtiType,
+        linkedinUrl: response.data.linkedinUrl,
+        personalWebsiteUrl: response.data.personalWebsiteUrl,
+        githubUrl: response.data.githubUrl
       }
       
       // Update localStorage
@@ -239,6 +377,20 @@ function formatDate(dateString: string) {
     hour: '2-digit',
     minute: '2-digit'
   })
+}
+
+function getPremiumStatus() {
+  if (isPremiumExpired.value) {
+    return ' (Expired)'
+  }
+  if (isExpiringMon.value) {
+    return ' (Expiring Soon)'
+  }
+  return ' (Active)'
+}
+
+function goToPayment() {
+  router.push('/payment')
 }
 
 onMounted(() => {

@@ -9,6 +9,12 @@ public class User {
     private String firstName;
     private String lastName;
     private String profilePhotoUrl;
+    private String mbtiType;
+    private String linkedinUrl;
+    private String personalWebsiteUrl;
+    private String githubUrl;
+    private AccountType accountType;
+    private LocalDateTime premiumExpiryDate;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
@@ -44,9 +50,34 @@ public class User {
     public String getProfilePhotoUrl() { return profilePhotoUrl; }
     public void setProfilePhotoUrl(String profilePhotoUrl) { this.profilePhotoUrl = profilePhotoUrl; }
 
+    public String getMbtiType() { return mbtiType; }
+    public void setMbtiType(String mbtiType) { this.mbtiType = mbtiType; }
+
+    public String getLinkedinUrl() { return linkedinUrl; }
+    public void setLinkedinUrl(String linkedinUrl) { this.linkedinUrl = linkedinUrl; }
+
+    public String getPersonalWebsiteUrl() { return personalWebsiteUrl; }
+    public void setPersonalWebsiteUrl(String personalWebsiteUrl) { this.personalWebsiteUrl = personalWebsiteUrl; }
+
+    public String getGithubUrl() { return githubUrl; }
+    public void setGithubUrl(String githubUrl) { this.githubUrl = githubUrl; }
+
+    public AccountType getAccountType() { return accountType; }
+    public void setAccountType(AccountType accountType) { this.accountType = accountType; }
+
+    public LocalDateTime getPremiumExpiryDate() { return premiumExpiryDate; }
+    public void setPremiumExpiryDate(LocalDateTime premiumExpiryDate) { this.premiumExpiryDate = premiumExpiryDate; }
+
     public LocalDateTime getCreatedAt() { return createdAt; }
     public void setCreatedAt(LocalDateTime createdAt) { this.createdAt = createdAt; }
 
     public LocalDateTime getUpdatedAt() { return updatedAt; }
     public void setUpdatedAt(LocalDateTime updatedAt) { this.updatedAt = updatedAt; }
+
+    // Helper method to check if user has active premium
+    public boolean hasActivePremium() {
+        return accountType == AccountType.PREMIUM && 
+               premiumExpiryDate != null && 
+               premiumExpiryDate.isAfter(LocalDateTime.now());
+    }
 }

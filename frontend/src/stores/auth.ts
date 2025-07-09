@@ -51,7 +51,13 @@ export const useAuthStore = defineStore('auth', () => {
           email: response.data.email,
           firstName: response.data.firstName,
           lastName: response.data.lastName,
-          profilePhotoUrl: response.data.profilePhotoUrl
+          profilePhotoUrl: response.data.profilePhotoUrl,
+          mbtiType: response.data.mbtiType,
+          linkedinUrl: response.data.linkedinUrl,
+          personalWebsiteUrl: response.data.personalWebsiteUrl,
+          githubUrl: response.data.githubUrl,
+          accountType: response.data.accountType,
+          premiumExpiryDate: response.data.premiumExpiryDate
         }
         
         // Store in localStorage

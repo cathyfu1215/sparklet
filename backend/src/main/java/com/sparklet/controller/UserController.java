@@ -40,14 +40,39 @@ public class UserController {
             return ResponseEntity.notFound().build();
         }
         
-        // Update only allowed fields
+        // Validate URLs if provided
+        if (updatedUser.getLinkedinUrl() != null && !updatedUser.getLinkedinUrl().isEmpty() && !isValidUrl(updatedUser.getLinkedinUrl())) {
+            return ResponseEntity.badRequest().body(ApiResponse.error("Invalid LinkedIn URL format"));
+        }
+        if (updatedUser.getPersonalWebsiteUrl() != null && !updatedUser.getPersonalWebsiteUrl().isEmpty() && !isValidUrl(updatedUser.getPersonalWebsiteUrl())) {
+            return ResponseEntity.badRequest().body(ApiResponse.error("Invalid personal website URL format"));
+        }
+        if (updatedUser.getGithubUrl() != null && !updatedUser.getGithubUrl().isEmpty() && !isValidUrl(updatedUser.getGithubUrl())) {
+            return ResponseEntity.badRequest().body(ApiResponse.error("Invalid GitHub URL format"));
+        }
+        
+        // Update only allowed fields (account type updates should be handled separately for security)
         existingUser.setFirstName(updatedUser.getFirstName());
         existingUser.setLastName(updatedUser.getLastName());
         existingUser.setProfilePhotoUrl(updatedUser.getProfilePhotoUrl());
+        existingUser.setMbtiType(updatedUser.getMbtiType());
+        existingUser.setLinkedinUrl(updatedUser.getLinkedinUrl());
+        existingUser.setPersonalWebsiteUrl(updatedUser.getPersonalWebsiteUrl());
+        existingUser.setGithubUrl(updatedUser.getGithubUrl());
+        // Note: accountType and premiumExpiryDate are not updated here for security reasons
         
         User saved = userDetailsService.save(existingUser);
         saved.setPassword(null); // Don't send password in response
         
         return ResponseEntity.ok(ApiResponse.success("Profile updated successfully", saved));
+    }
+    
+    private boolean isValidUrl(String url) {
+        try {
+            new java.net.URL(url);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
     }
 }
