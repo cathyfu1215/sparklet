@@ -1,3 +1,4 @@
+/Users/cathyfu/VAM/sparklet/backend/src/main/java/com/sparklet/dto/payment/PaymentIntentRequest.java
 /Users/cathyfu/VAM/sparklet/backend/src/main/java/com/sparklet/controller/FeedbackController.java
 /Users/cathyfu/VAM/sparklet/backend/src/main/java/com/sparklet/dto/auth/SignupRequest.java
 /Users/cathyfu/VAM/sparklet/backend/src/main/java/com/sparklet/service/UserDetailsServiceImpl.java
@@ -8,6 +9,7 @@
 /Users/cathyfu/VAM/sparklet/backend/src/main/java/com/sparklet/service/FeedbackService.java
 /Users/cathyfu/VAM/sparklet/backend/src/main/java/com/sparklet/service/DashboardService.java
 /Users/cathyfu/VAM/sparklet/backend/src/main/java/com/sparklet/service/PageService.java
+/Users/cathyfu/VAM/sparklet/backend/src/main/java/com/sparklet/dto/payment/PaymentIntentResponse.java
 /Users/cathyfu/VAM/sparklet/backend/src/main/java/com/sparklet/controller/ProblemController.java
 /Users/cathyfu/VAM/sparklet/backend/src/main/java/com/sparklet/controller/InterviewController.java
 /Users/cathyfu/VAM/sparklet/backend/src/main/java/com/sparklet/model/User.java
@@ -17,13 +19,17 @@
 /Users/cathyfu/VAM/sparklet/backend/src/main/java/com/sparklet/service/InterviewService.java
 /Users/cathyfu/VAM/sparklet/backend/src/main/java/com/sparklet/controller/UserController.java
 /Users/cathyfu/VAM/sparklet/backend/src/main/java/com/sparklet/model/Problem.java
+/Users/cathyfu/VAM/sparklet/backend/src/main/java/com/sparklet/service/PaymentService.java
 /Users/cathyfu/VAM/sparklet/backend/src/main/java/com/sparklet/controller/JobApplicationController.java
 /Users/cathyfu/VAM/sparklet/backend/src/main/java/com/sparklet/model/InterviewQuestion.java
+/Users/cathyfu/VAM/sparklet/backend/src/main/java/com/sparklet/model/AccountType.java
 /Users/cathyfu/VAM/sparklet/backend/src/main/java/com/sparklet/model/JobApplication.java
+/Users/cathyfu/VAM/sparklet/backend/src/main/java/com/sparklet/controller/PaymentController.java
 /Users/cathyfu/VAM/sparklet/backend/src/main/java/com/sparklet/security/AuthTokenFilter.java
 /Users/cathyfu/VAM/sparklet/backend/src/main/java/com/sparklet/security/AuthEntryPointJwt.java
 /Users/cathyfu/VAM/sparklet/backend/src/main/java/com/sparklet/controller/ApiController.java
 /Users/cathyfu/VAM/sparklet/backend/src/main/java/com/sparklet/model/PageInfo.java
+/Users/cathyfu/VAM/sparklet/backend/src/main/java/com/sparklet/model/Payment.java
 /Users/cathyfu/VAM/sparklet/backend/src/main/java/com/sparklet/controller/PageController.java
 /Users/cathyfu/VAM/sparklet/backend/src/main/java/com/sparklet/config/WebSecurityConfig.java
 /Users/cathyfu/VAM/sparklet/backend/src/main/java/com/sparklet/model/DashboardStats.java
@@ -32,3 +38,4 @@
 /Users/cathyfu/VAM/sparklet/backend/src/main/java/com/sparklet/dto/auth/AuthResponse.java
 /Users/cathyfu/VAM/sparklet/backend/src/main/java/com/sparklet/controller/AuthController.java
 /Users/cathyfu/VAM/sparklet/backend/src/main/java/com/sparklet/SparkletBackendApplication.java
+/Users/cathyfu/VAM/sparklet/backend/src/main/java/com/sparklet/dto/payment/PaymentConfirmRequest.java

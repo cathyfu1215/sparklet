@@ -108,6 +108,16 @@ export const useAuthStore = defineStore('auth', () => {
     error.value = null
   }
 
+  function forceLogout() {
+    // Force logout and clear all auth data
+    authService.logout()
+    token.value = null
+    user.value = null
+    error.value = null
+    // Clear any other potential auth remnants
+    localStorage.clear()
+  }
+
   function clearError() {
     error.value = null
   }
@@ -141,6 +151,7 @@ export const useAuthStore = defineStore('auth', () => {
     login,
     signup,
     logout,
+    forceLogout,
     clearError
   }
 })

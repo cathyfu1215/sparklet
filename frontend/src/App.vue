@@ -1,5 +1,5 @@
 <template>
-  <div class="min-h-screen bg-gray-50 dark:bg-gray-900 text-gray-800 dark:text-gray-200 font-sans">
+  <div class="min-h-screen bg-neutral-50 dark:bg-gray-900 text-gray-800 dark:text-gray-200 transition-colors duration-300">
     <!-- Navigation - Only show for authenticated pages -->
     <AppNavigation 
       v-if="!isWelcomePage" 
@@ -8,7 +8,7 @@
     />
 
     <!-- Main Content -->
-    <main>
+    <main class="transition-all duration-300">
       <div v-if="!isWelcomePage" class="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <router-view v-slot="{ Component }">
           <transition name="fade" mode="out-in">
@@ -69,13 +69,21 @@ onMounted(() => {
 </script>
 
 <style>
+/* Enhanced page transitions */
 .fade-enter-active,
 .fade-leave-active {
-  transition: opacity 0.2s ease;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .fade-enter-from,
 .fade-leave-to {
   opacity: 0;
+  transform: translateY(10px);
+}
+
+.fade-enter-to,
+.fade-leave-from {
+  opacity: 1;
+  transform: translateY(0);
 }
 </style>

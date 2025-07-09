@@ -75,8 +75,13 @@ router.beforeEach((to, from, next) => {
     // Redirect to login if route requires auth and user is not authenticated
     next('/login')
   } else if ((to.name === 'login' || to.name === 'signup') && authStore.isAuthenticated) {
-    // Redirect to dashboard if trying to access login/signup while authenticated
-    next('/dashboard')
+    // Only redirect to dashboard if coming from a non-welcome page or if user is truly authenticated
+    // Allow access to login/signup if there's a forced logout or if token is invalid
+    if (from.name !== 'welcome' && to.query.force !== 'true') {
+      next('/dashboard')
+    } else {
+      next()
+    }
   } else {
     next()
   }

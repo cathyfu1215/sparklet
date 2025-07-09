@@ -1,6 +1,7 @@
 package com.sparklet.controller;
 
 import com.sparklet.dto.ApiResponse;
+import com.sparklet.model.AccountType;
 import com.sparklet.model.User;
 import com.sparklet.security.UserPrincipal;
 import com.sparklet.service.UserDetailsServiceImpl;
@@ -24,6 +25,12 @@ public class UserController {
         
         if (user == null) {
             return ResponseEntity.notFound().build();
+        }
+        
+        // Ensure accountType is set for existing users (migration fix)
+        if (user.getAccountType() == null) {
+            user.setAccountType(AccountType.BASIC);
+            userDetailsService.save(user);
         }
         
         // Don't send password in response

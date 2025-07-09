@@ -4,6 +4,7 @@ import com.sparklet.dto.ApiResponse;
 import com.sparklet.dto.auth.AuthResponse;
 import com.sparklet.dto.auth.LoginRequest;
 import com.sparklet.dto.auth.SignupRequest;
+import com.sparklet.model.AccountType;
 import com.sparklet.model.User;
 import com.sparklet.security.JwtUtils;
 import com.sparklet.service.UserDetailsServiceImpl;
@@ -16,6 +17,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
+
+import java.time.LocalDateTime;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
@@ -83,6 +86,9 @@ public class AuthController {
         user.setLastName(signUpRequest.getLastName());
         user.setPassword(encoder.encode(signUpRequest.getPassword()));
         user.setProfilePhotoUrl("https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80");
+        user.setAccountType(AccountType.BASIC); // Set default account type to BASIC
+        user.setCreatedAt(LocalDateTime.now());
+        user.setUpdatedAt(LocalDateTime.now());
 
         userDetailsService.save(user);
 

@@ -1,222 +1,290 @@
 <template>
-  <div class="max-w-4xl mx-auto">
-    <div class="bg-white dark:bg-gray-800 shadow-md rounded-lg p-6">
-      <h1 class="text-3xl font-bold text-gray-800 dark:text-white mb-6">Upgrade to Premium</h1>
+  <div class="section">
+    <div class="max-w-4xl mx-auto">
+      <div class="section-header">
+        <h1 class="section-title">Upgrade to Premium</h1>
+        <p class="section-subtitle">
+          Unlock advanced features and accelerate your job search journey
+        </p>
+      </div>
       
       <!-- Loading State -->
-      <div v-if="loading" class="text-center py-8">
-        <div class="animate-spin rounded-full h-16 w-16 border-b-2 border-blue-500 mx-auto"></div>
-        <p class="mt-4 text-gray-600 dark:text-gray-300">Loading payment options...</p>
+      <div v-if="loading" class="text-center py-12">
+        <div class="spinner h-16 w-16 mx-auto"></div>
+        <p class="mt-4 text-gray-600 dark:text-gray-300 font-medium">Loading payment options...</p>
       </div>
 
       <!-- Error State -->
-      <div v-else-if="error" class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
+      <div v-else-if="error" class="alert alert-error mb-8">
         <p>{{ error }}</p>
-        <button @click="loadPlans" class="mt-2 bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600">
+        <button @click="loadPlans" class="btn btn-primary mt-4">
           Retry
         </button>
       </div>
 
       <!-- Success Message -->
-      <div v-if="successMessage" class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded mb-4">
+      <div v-if="successMessage" class="alert alert-success mb-8">
         <p>{{ successMessage }}</p>
       </div>
 
       <!-- Payment Form -->
-      <div v-if="!loading && !error && !paymentProcessing" class="space-y-6">
+      <div v-if="!loading && !error && !paymentProcessing" class="space-y-8">
         <!-- Plan Selection -->
-        <div>
-          <h2 class="text-xl font-semibold text-gray-800 dark:text-white mb-4">Choose Your Plan</h2>
-          <div class="grid md:grid-cols-2 gap-6">
-            <!-- Monthly Plan -->
-            <div 
-              :class="[
-                'border-2 rounded-lg p-6 cursor-pointer transition-colors',
-                selectedPlan === 'premium_monthly' 
-                  ? 'border-blue-500 bg-blue-50 dark:bg-blue-900/20' 
-                  : 'border-gray-300 dark:border-gray-600 hover:border-blue-300'
-              ]"
-              @click="selectedPlan = 'premium_monthly'"
-            >
-              <div class="flex items-center justify-between mb-4">
-                <h3 class="text-lg font-semibold text-gray-800 dark:text-white">Monthly Plan</h3>
-                <input 
-                  type="radio" 
-                  :checked="selectedPlan === 'premium_monthly'"
-                  class="text-blue-500 focus:ring-blue-500"
-                  readonly
-                >
+        <div class="card">
+          <div class="card-header">
+            <h2 class="text-xl font-semibold text-gray-800 dark:text-white">Choose Your Plan</h2>
+          </div>
+          <div class="card-body">
+            <div class="grid md:grid-cols-2 gap-6">
+              <!-- Monthly Plan -->
+              <div 
+                :class="[
+                  'border-2 rounded-xl p-6 cursor-pointer transition-all duration-300',
+                  selectedPlan === 'premium_monthly' 
+                    ? 'border-macaroon-peach-400 bg-gradient-to-br from-macaroon-peach-50 to-macaroon-peach-100 dark:from-macaroon-peach-900/20 dark:to-macaroon-peach-800/20 shadow-macaroon-peach' 
+                    : 'border-gray-300 dark:border-gray-600 hover:border-macaroon-peach-300 hover:shadow-soft'
+                ]"
+                @click="selectedPlan = 'premium_monthly'"
+              >
+                <div class="flex items-center justify-between mb-4">
+                  <h3 class="text-lg font-semibold text-gray-800 dark:text-white">Monthly Plan</h3>
+                  <div :class="[
+                    'w-6 h-6 rounded-full border-2 flex items-center justify-center',
+                    selectedPlan === 'premium_monthly' 
+                      ? 'border-macaroon-peach-500 bg-macaroon-peach-500' 
+                      : 'border-gray-300'
+                  ]">
+                    <div v-if="selectedPlan === 'premium_monthly'" class="w-2 h-2 bg-white rounded-full"></div>
+                  </div>
+                </div>
+                <div class="text-3xl font-bold text-gray-900 dark:text-white mb-2">
+                  ${{ plans?.premium_monthly }}<span class="text-lg text-gray-500 dark:text-gray-400">/month</span>
+                </div>
+                <ul class="text-sm text-gray-600 dark:text-gray-300 space-y-2">
+                  <li class="flex items-center">
+                    <svg class="w-4 h-4 text-macaroon-mint-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                    </svg>
+                    Unlimited job applications tracking
+                  </li>
+                  <li class="flex items-center">
+                    <svg class="w-4 h-4 text-macaroon-mint-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                    </svg>
+                    Advanced interview preparation
+                  </li>
+                  <li class="flex items-center">
+                    <svg class="w-4 h-4 text-macaroon-mint-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                    </svg>
+                    Premium feedback portal
+                  </li>
+                  <li class="flex items-center">
+                    <svg class="w-4 h-4 text-macaroon-mint-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                    </svg>
+                    Priority support
+                  </li>
+                </ul>
               </div>
-              <div class="text-3xl font-bold text-gray-900 dark:text-white mb-2">
-                ${{ plans?.premium_monthly }}<span class="text-lg text-gray-500">/month</span>
-              </div>
-              <ul class="text-sm text-gray-600 dark:text-gray-300 space-y-1">
-                <li>✓ Unlimited job applications tracking</li>
-                <li>✓ Advanced interview preparation</li>
-                <li>✓ Premium feedback portal</li>
-                <li>✓ Priority support</li>
-              </ul>
-            </div>
 
-            <!-- Yearly Plan -->
-            <div 
-              :class="[
-                'border-2 rounded-lg p-6 cursor-pointer transition-colors relative',
-                selectedPlan === 'premium_yearly' 
-                  ? 'border-blue-500 bg-blue-50 dark:bg-blue-900/20' 
-                  : 'border-gray-300 dark:border-gray-600 hover:border-blue-300'
-              ]"
-              @click="selectedPlan = 'premium_yearly'"
-            >
-              <div class="absolute -top-3 right-4 bg-green-500 text-white px-3 py-1 rounded-full text-xs font-semibold">
-                Best Value
+              <!-- Yearly Plan -->
+              <div 
+                :class="[
+                  'border-2 rounded-xl p-6 cursor-pointer transition-all duration-300 relative',
+                  selectedPlan === 'premium_yearly' 
+                    ? 'border-macaroon-lavender-400 bg-gradient-to-br from-macaroon-lavender-50 to-macaroon-lavender-100 dark:from-macaroon-lavender-900/20 dark:to-macaroon-lavender-800/20 shadow-macaroon-lavender' 
+                    : 'border-gray-300 dark:border-gray-600 hover:border-macaroon-lavender-300 hover:shadow-soft'
+                ]"
+                @click="selectedPlan = 'premium_yearly'"
+              >
+                <div class="absolute -top-3 right-4 bg-gradient-to-r from-macaroon-mint-500 to-macaroon-mint-600 text-white px-3 py-1 rounded-full text-xs font-semibold shadow-sm">
+                  Best Value
+                </div>
+                <div class="flex items-center justify-between mb-4">
+                  <h3 class="text-lg font-semibold text-gray-800 dark:text-white">Yearly Plan</h3>
+                  <div :class="[
+                    'w-6 h-6 rounded-full border-2 flex items-center justify-center',
+                    selectedPlan === 'premium_yearly' 
+                      ? 'border-macaroon-lavender-500 bg-macaroon-lavender-500' 
+                      : 'border-gray-300'
+                  ]">
+                    <div v-if="selectedPlan === 'premium_yearly'" class="w-2 h-2 bg-white rounded-full"></div>
+                  </div>
+                </div>
+                <div class="text-3xl font-bold text-gray-900 dark:text-white mb-2">
+                  ${{ plans?.premium_yearly }}<span class="text-lg text-gray-500 dark:text-gray-400">/year</span>
+                </div>
+                <div class="text-sm text-macaroon-mint-600 dark:text-macaroon-mint-400 mb-4 font-medium">
+                  Save ${{ monthlySavings }} per year!
+                </div>
+                <ul class="text-sm text-gray-600 dark:text-gray-300 space-y-2">
+                  <li class="flex items-center">
+                    <svg class="w-4 h-4 text-macaroon-mint-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                    </svg>
+                    All monthly plan features
+                  </li>
+                  <li class="flex items-center">
+                    <svg class="w-4 h-4 text-macaroon-mint-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                    </svg>
+                    2 months free
+                  </li>
+                  <li class="flex items-center">
+                    <svg class="w-4 h-4 text-macaroon-mint-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                    </svg>
+                    Advanced analytics
+                  </li>
+                  <li class="flex items-center">
+                    <svg class="w-4 h-4 text-macaroon-mint-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                    </svg>
+                    Custom integrations
+                  </li>
+                </ul>
               </div>
-              <div class="flex items-center justify-between mb-4">
-                <h3 class="text-lg font-semibold text-gray-800 dark:text-white">Yearly Plan</h3>
-                <input 
-                  type="radio" 
-                  :checked="selectedPlan === 'premium_yearly'"
-                  class="text-blue-500 focus:ring-blue-500"
-                  readonly
-                >
-              </div>
-              <div class="text-3xl font-bold text-gray-900 dark:text-white mb-2">
-                ${{ plans?.premium_yearly }}<span class="text-lg text-gray-500">/year</span>
-              </div>
-              <div class="text-sm text-green-600 dark:text-green-400 mb-2 font-medium">
-                Save ${{ monthlySavings }} per year!
-              </div>
-              <ul class="text-sm text-gray-600 dark:text-gray-300 space-y-1">
-                <li>✓ All monthly plan features</li>
-                <li>✓ 2 months free</li>
-                <li>✓ Advanced analytics</li>
-                <li>✓ Custom integrations</li>
-              </ul>
             </div>
           </div>
         </div>
 
         <!-- Payment Method Selection -->
-        <div>
-          <h2 class="text-xl font-semibold text-gray-800 dark:text-white mb-4">Payment Method</h2>
-          <div class="grid md:grid-cols-2 gap-4">
-            <div 
-              :class="[
-                'border-2 rounded-lg p-4 cursor-pointer transition-colors flex items-center',
-                selectedPaymentMethod === 'card' 
-                  ? 'border-blue-500 bg-blue-50 dark:bg-blue-900/20' 
-                  : 'border-gray-300 dark:border-gray-600 hover:border-blue-300'
-              ]"
-              @click="selectedPaymentMethod = 'card'"
-            >
-              <input 
-                type="radio" 
-                :checked="selectedPaymentMethod === 'card'"
-                class="text-blue-500 focus:ring-blue-500 mr-3"
-                readonly
+        <div class="card">
+          <div class="card-header">
+            <h2 class="text-xl font-semibold text-gray-800 dark:text-white">Payment Method</h2>
+          </div>
+          <div class="card-body">
+            <div class="grid md:grid-cols-2 gap-4">
+              <div 
+                :class="[
+                  'border-2 rounded-xl p-4 cursor-pointer transition-all duration-300 flex items-center',
+                  selectedPaymentMethod === 'card' 
+                    ? 'border-macaroon-peach-400 bg-gradient-to-r from-macaroon-peach-50 to-macaroon-peach-100 dark:from-macaroon-peach-900/20 dark:to-macaroon-peach-800/20' 
+                    : 'border-gray-300 dark:border-gray-600 hover:border-macaroon-peach-300'
+                ]"
+                @click="selectedPaymentMethod = 'card'"
               >
-              <div>
-                <div class="font-medium text-gray-800 dark:text-white">Credit/Debit Card</div>
-                <div class="text-sm text-gray-500">Visa, Mastercard, American Express</div>
+                <div :class="[
+                  'w-5 h-5 rounded-full border-2 flex items-center justify-center mr-3',
+                  selectedPaymentMethod === 'card' 
+                    ? 'border-macaroon-peach-500 bg-macaroon-peach-500' 
+                    : 'border-gray-300'
+                ]">
+                  <div v-if="selectedPaymentMethod === 'card'" class="w-2 h-2 bg-white rounded-full"></div>
+                </div>
+                <div>
+                  <div class="font-medium text-gray-800 dark:text-white">Credit/Debit Card</div>
+                  <div class="text-sm text-gray-500 dark:text-gray-400">Visa, Mastercard, American Express</div>
+                </div>
               </div>
-            </div>
 
-            <div 
-              :class="[
-                'border-2 rounded-lg p-4 cursor-pointer transition-colors flex items-center',
-                selectedPaymentMethod === 'paypal' 
-                  ? 'border-blue-500 bg-blue-50 dark:bg-blue-900/20' 
-                  : 'border-gray-300 dark:border-gray-600 hover:border-blue-300'
-              ]"
-              @click="selectedPaymentMethod = 'paypal'"
-            >
-              <input 
-                type="radio" 
-                :checked="selectedPaymentMethod === 'paypal'"
-                class="text-blue-500 focus:ring-blue-500 mr-3"
-                readonly
+              <div 
+                :class="[
+                  'border-2 rounded-xl p-4 cursor-pointer transition-all duration-300 flex items-center',
+                  selectedPaymentMethod === 'paypal' 
+                    ? 'border-macaroon-lavender-400 bg-gradient-to-r from-macaroon-lavender-50 to-macaroon-lavender-100 dark:from-macaroon-lavender-900/20 dark:to-macaroon-lavender-800/20' 
+                    : 'border-gray-300 dark:border-gray-600 hover:border-macaroon-lavender-300'
+                ]"
+                @click="selectedPaymentMethod = 'paypal'"
               >
-              <div>
-                <div class="font-medium text-gray-800 dark:text-white">PayPal</div>
-                <div class="text-sm text-gray-500">Pay with your PayPal account</div>
+                <div :class="[
+                  'w-5 h-5 rounded-full border-2 flex items-center justify-center mr-3',
+                  selectedPaymentMethod === 'paypal' 
+                    ? 'border-macaroon-lavender-500 bg-macaroon-lavender-500' 
+                    : 'border-gray-300'
+                ]">
+                  <div v-if="selectedPaymentMethod === 'paypal'" class="w-2 h-2 bg-white rounded-full"></div>
+                </div>
+                <div>
+                  <div class="font-medium text-gray-800 dark:text-white">PayPal</div>
+                  <div class="text-sm text-gray-500 dark:text-gray-400">Pay with your PayPal account</div>
+                </div>
               </div>
             </div>
           </div>
         </div>
 
         <!-- Mock Credit Card Form (for demonstration) -->
-        <div v-if="selectedPaymentMethod === 'card'" class="space-y-4">
-          <h3 class="text-lg font-semibold text-gray-800 dark:text-white">Card Information</h3>
-          <div class="grid md:grid-cols-2 gap-4">
-            <div>
-              <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                Card Number
-              </label>
-              <input
-                v-model="cardForm.number"
-                type="text"
-                placeholder="1234 5678 9012 3456"
-                class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:text-white"
-              >
-            </div>
-            <div>
-              <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                Cardholder Name
-              </label>
-              <input
-                v-model="cardForm.name"
-                type="text"
-                placeholder="John Doe"
-                class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:text-white"
-              >
-            </div>
-            <div>
-              <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                Expiry Date
-              </label>
-              <input
-                v-model="cardForm.expiry"
-                type="text"
-                placeholder="MM/YY"
-                class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:text-white"
-              >
-            </div>
-            <div>
-              <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                CVV
-              </label>
-              <input
-                v-model="cardForm.cvv"
-                type="text"
-                placeholder="123"
-                class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:text-white"
-              >
+        <div v-if="selectedPaymentMethod === 'card'" class="card">
+          <div class="card-header">
+            <h3 class="text-xl font-semibold text-gray-800 dark:text-white">Card Information</h3>
+          </div>
+          <div class="card-body space-y-6">
+            <div class="grid md:grid-cols-2 gap-6">
+              <div class="form-group">
+                <label class="form-label">
+                  Card Number
+                </label>
+                <input
+                  v-model="cardForm.number"
+                  type="text"
+                  placeholder="1234 5678 9012 3456"
+                  class="form-control"
+                >
+              </div>
+              <div class="form-group">
+                <label class="form-label">
+                  Cardholder Name
+                </label>
+                <input
+                  v-model="cardForm.name"
+                  type="text"
+                  placeholder="John Doe"
+                  class="form-control"
+                >
+              </div>
+              <div class="form-group">
+                <label class="form-label">
+                  Expiry Date
+                </label>
+                <input
+                  v-model="cardForm.expiry"
+                  type="text"
+                  placeholder="MM/YY"
+                  class="form-control"
+                >
+              </div>
+              <div class="form-group">
+                <label class="form-label">
+                  CVV
+                </label>
+                <input
+                  v-model="cardForm.cvv"
+                  type="text"
+                  placeholder="123"
+                  class="form-control"
+                >
+              </div>
             </div>
           </div>
         </div>
 
         <!-- Action Buttons -->
-        <div class="flex justify-between items-center pt-6 border-t border-gray-200 dark:border-gray-600">
+        <div class="flex justify-between items-center pt-6">
           <button
             @click="$router.push('/settings')"
-            class="px-6 py-2 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 rounded-md hover:bg-gray-50 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            class="btn btn-outline"
           >
             Cancel
           </button>
           <button
             @click="processPayment"
             :disabled="!canProcessPayment"
-            class="px-6 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed"
+            class="btn btn-primary"
           >
+            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" />
+            </svg>
             Pay ${{ selectedPlanPrice }}
           </button>
         </div>
       </div>
 
       <!-- Payment Processing -->
-      <div v-if="paymentProcessing" class="text-center py-8">
-        <div class="animate-spin rounded-full h-16 w-16 border-b-2 border-blue-500 mx-auto"></div>
-        <p class="mt-4 text-gray-600 dark:text-gray-300">Processing your payment...</p>
+      <div v-if="paymentProcessing" class="text-center py-12">
+        <div class="spinner h-16 w-16 mx-auto"></div>
+        <p class="mt-4 text-gray-600 dark:text-gray-300 font-medium">Processing your payment...</p>
         <p class="text-sm text-gray-500 dark:text-gray-400">Please do not close this page</p>
       </div>
     </div>
