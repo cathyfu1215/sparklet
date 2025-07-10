@@ -11,10 +11,10 @@ The platform integrates AI-powered tools and personalized recommendations, conso
 ## Tech Stack
 
 - **Backend:** Java Spring Boot  
-- **Frontend:** Vue 3  
+- **Frontend:** Vue 3, TailwindCSS  
 - **Authentication & Database:** Firebase  
-- **AI Services:** Python FastAPI, Pinecone  
-- **Development Tools:** Gemini CLI (for AI-assisted development)
+- **AI Services:** Python FastAPI, Pinecone, Together.ai  
+- **Development Tools:** Gemini CLI, VSCode, Github Copilot, Claude Sonnet 4
 
 ---
 
@@ -28,3 +28,10 @@ The platform integrates AI-powered tools and personalized recommendations, conso
 - Anonymous feedback tool  https://github.com/cathyfu1215/positivefeedback
 - Job application tracker  https://github.com/cathyfu1215/huksyApplicationTracker
 
+## Current Screenshots
+### Welcome Page
+![Screenshot 2025-07-09 at 9 16 00 PM](https://github.com/user-attachments/assets/5528bc65-467b-4456-bba0-1d934e1cff26)
+### Dashboard
+![Screenshot 2025-07-09 at 9 15 04 PM](https://github.com/user-attachments/assets/84c9c7d5-6f4b-490b-943f-46700e130efd)
+
+![Screenshot 2025-07-09 at 9 15 17 PM](https://github.com/user-attachments/assets/d745a1cb-9e07-4796-be8c-814f2ae0f170)
