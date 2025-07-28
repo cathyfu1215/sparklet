@@ -81,6 +81,38 @@
       <artifactId>junit-jupiter-engine</artifactId>
       <scope>test</scope>
     </dependency>
+    <dependency>
+    <groupId>io.micronaut.data</groupId>
+    <artifactId>micronaut-data-jpa</artifactId>
+    </dependency>
+    <dependency>
+        <groupId>io.micronaut.sql</groupId>
+        <artifactId>micronaut-jdbc-hikari</artifactId>
+    </dependency>
+    <dependency>
+        <groupId>com.h2database</groupId>
+        <artifactId>h2</artifactId>
+        <scope>runtime</scope>
+    </dependency>
+    <dependency>
+        <groupId>org.springframework.security</groupId>
+        <artifactId>spring-security-crypto</artifactId>
+        <version>6.2.1</version>
+    </dependency>
+    <dependency>
+        <groupId>io.micronaut.data</groupId>
+        <artifactId>micronaut-data-hibernate-jpa</artifactId>
+    </dependency>
+  
+    <dependency>
+        <groupId>jakarta.persistence</groupId>
+        <artifactId>jakarta.persistence-api</artifactId>
+    </dependency>
+    <dependency>
+    <groupId>commons-logging</groupId>
+    <artifactId>commons-logging</artifactId>
+    <version>1.2</version>
+</dependency>
   </dependencies>
   <build>
     <plugins>
@@ -141,6 +173,17 @@
               <groupId>io.micronaut.validation</groupId>
               <artifactId>micronaut-validation-processor</artifactId>
               <version>${micronaut.validation.version}</version>
+              <exclusions>
+                <exclusion>
+                  <groupId>io.micronaut</groupId>
+                  <artifactId>micronaut-inject</artifactId>
+                </exclusion>
+              </exclusions>
+            </path>
+            <path>
+              <groupId>io.micronaut.data</groupId>
+              <artifactId>micronaut-data-processor</artifactId>
+              <version>${micronaut.data.version}</version>
               <exclusions>
                 <exclusion>
                   <groupId>io.micronaut</groupId>
