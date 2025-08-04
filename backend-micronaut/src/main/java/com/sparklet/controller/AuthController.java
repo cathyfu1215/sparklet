@@ -3,6 +3,7 @@ package com.sparklet.controller;
 import com.sparklet.dto.JwtResponse;
 import com.sparklet.dto.LoginRequest;
 import com.sparklet.dto.SignupRequest;
+import com.sparklet.entity.Role;
 import com.sparklet.entity.User;
 import com.sparklet.service.UserService;
 import io.micronaut.http.HttpResponse;
@@ -15,6 +16,7 @@ import io.micronaut.security.token.generator.TokenGenerator;
 import jakarta.inject.Inject;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -28,46 +30,46 @@ public class AuthController {
     @Inject
     private UserService userService;
 
-    @Post("/login")
-    @Secured(SecurityRule.IS_ANONYMOUS)
-    public HttpResponse<?> authenticateUser(@Body LoginRequest loginRequest) {
+@Post("/login")
+@Secured(SecurityRule.IS_ANONYMOUS)
+public HttpResponse<?> authenticateUser(@Body LoginRequest loginRequest) {
+    
+    // Find user by username
+    Optional<User> userOptional = userService.findByUsername(loginRequest.getUsername());
+    
+    if (userOptional.isPresent()) {
+        User user = userOptional.get();
         
-        // Find user by username
-        Optional<User> userOptional = userService.findByUsername(loginRequest.getUsername());
-        
-        if (userOptional.isPresent()) {
-            User user = userOptional.get();
+        // Validate password
+        if (userService.validatePassword(loginRequest.getPassword(), user.getPassword())) {
             
-            // Validate password
-            if (userService.validatePassword(loginRequest.getPassword(), user.getPassword())) {
-                
-                // Generate JWT token with user roles
-                Map<String, Object> claims = new HashMap<>();
-                claims.put("sub", user.getUsername());
-                claims.put("userId", user.getId());
-                claims.put("email", user.getEmail());
-                
-                // Convert roles to strings for JWT
-                String roles = user.getRoles().stream()
-                    .map(Enum::name)
-                    .collect(Collectors.joining(","));
-                claims.put("roles", roles);
-                
-                String token = tokenGenerator.generateToken(claims).orElse("");
-                
-                JwtResponse jwtResponse = new JwtResponse(
-                    token,
-                    user.getId(),
-                    user.getUsername(),
-                    user.getEmail()
-                );
-                
-                return HttpResponse.ok(jwtResponse);
-            }
+            // Generate JWT token with user roles
+            Map<String, Object> claims = new HashMap<>();
+            claims.put("sub", user.getUsername());
+            claims.put("userId", user.getId());
+            claims.put("email", user.getEmail());
+            
+            // IMPORTANT: Add roles properly for Micronaut Security
+            List<String> roles = user.getRoles().stream()
+                .map(Role::name)
+                .toList();
+            claims.put("roles", roles);  // This is key for role-based security
+            
+            String token = tokenGenerator.generateToken(claims).orElse("");
+            
+            JwtResponse jwtResponse = new JwtResponse(
+                token,
+                user.getId(),
+                user.getUsername(),
+                user.getEmail()
+            );
+            
+            return HttpResponse.ok(jwtResponse);
         }
-        
-        return HttpResponse.unauthorized().body("Invalid username or password");
     }
+    
+    return HttpResponse.unauthorized().body("Invalid username or password");
+}
 
     @Post("/signup")
     @Secured(SecurityRule.IS_ANONYMOUS)
